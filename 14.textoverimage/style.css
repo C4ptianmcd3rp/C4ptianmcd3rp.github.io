@@ -1,0 +1,16 @@
+@charset "utf-8";
+/* Make the body and html take up the entire viewport */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Container for the full-page image */
+.full-page-image {
+    background-image: url('images/lyric01.jpg');
+    background-size: cover; /* Ensures the image covers the entire screen */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+}
