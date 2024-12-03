@@ -1,47 +1,50 @@
-// JavaScript to handle video switching and playback state preservation
+// JavaScript to handle video switching with playback state preservation
 
-// Get references to the video elements and the text box
-var video1 = document.getElementById("video1");
-var video2 = document.getElementById("video2");
+// Get references to the main video element and the text box
+var mainVideo = document.getElementById("mainVideo");
 var textBox = document.getElementById("text-box");
 
-// Variables to store playback positions
-var video1Time = 0;
-var video2Time = 0;
+// Array of video sources
+var videoSources = [
+    "videos/projectvideo1revise.mp4",
+    "videos/projectvideo2revise.mp4",
+    "videos/projectvideo3revise.mp4"
+];
 
-// Flag to unmute the videos after the first click
+// Variable to track the current video index
+var currentVideoIndex = 0;
+
+// Variable to unmute videos after the first click
 var firstClick = true;
 
-// Function to switch between videos
-function switchVideos() {
+// Function to randomly pick a new video index (excluding the current one)
+function getRandomVideoIndex() {
+    var newIndex;
+    do {
+        newIndex = Math.floor(Math.random() * videoSources.length);
+    } while (newIndex === currentVideoIndex); // Ensure the new video is different
+    return newIndex;
+}
+
+// Function to switch videos
+function switchVideo() {
     if (firstClick) {
-        // Unmute the videos on the first click
-        video1.muted = false;
-        video2.muted = false;
+        // Unmute the video on the first click
+        mainVideo.muted = false;
         firstClick = false;
     }
 
-    if (video1.style.display !== "none") {
-        // Save the current time of video1 and switch to video2
-        video1Time = video1.currentTime;
-        video1.pause();
-        video1.style.display = "none";
+    // Save the current playback time
+    var currentTime = mainVideo.currentTime;
 
-        video2.style.display = "block";
-        video2.currentTime = video2Time;
-        video2.play();
-    } else {
-        // Save the current time of video2 and switch to video1
-        video2Time = video2.currentTime;
-        video2.pause();
-        video2.style.display = "none";
+    // Get a new random video index
+    currentVideoIndex = getRandomVideoIndex();
 
-        video1.style.display = "block";
-        video1.currentTime = video1Time;
-        video1.play();
-    }
+    // Update the video source and resume playback from the saved time
+    mainVideo.src = videoSources[currentVideoIndex];
+    mainVideo.currentTime = currentTime;
+    mainVideo.play();
 }
 
-// Add a click event listener to the text box to toggle videos
-textBox.addEventListener("click", switchVideos);
-// JavaScript Document
+// Add a click event listener to the text box to trigger video switching
+textBox.addEventListener("click", switchVideo);
